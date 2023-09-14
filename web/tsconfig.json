@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "skipLibCheck": true, // 跳过对声明文件(.d.ts)的检查
+        "target": "es2020",
+        "module": "es2020",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "./",
+        "paths": {
+            "@/*": [
+                "./*"
+            ],
+        }
+    },
+    "ts-node": {
+        "esm": true
+    },
+    "include": [
+        "./**/*.ts",
+        "./**/*.d.ts",
+        "./**/*.tsx",
+        "./**/*.vue"
+    ]
+}

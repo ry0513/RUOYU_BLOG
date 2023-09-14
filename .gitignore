@@ -1,0 +1,11 @@
+# 某些文件夹
+.vscode/
+node_modules/
+dist/
+config/
+logs/
+
+# 某些文件
+auto-imports.d.ts
+components.d.ts
+pnpm-lock.yaml

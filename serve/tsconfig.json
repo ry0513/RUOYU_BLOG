@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "outDir": "../dist/src",
+        "skipLibCheck": true, // 跳过对声明文件(.d.ts)的检查
+        "target": "es2020",
+        "module": "es2020",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true
+        // // "experimentalDecorators": true,
+        // // "esModuleInterop": true,
+        // // "forceConsistentCasingInFileNames": true,
+        // // "strict": true,
+        // // "emitDecoratorMetadata": true,
+        // // "removeComments": true,
+        // // "noEmitOnError": true,
+    },
+    "ts-node": {
+        "esm": true
+    },
+}
