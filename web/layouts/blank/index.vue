@@ -1,5 +1,5 @@
 <template>
-  <div class="tdesign-wrapper">
+  <div>
     <router-view />
   </div>
 </template>

@@ -2,8 +2,8 @@ import { basename } from "path";
 import { renderToString } from "vue/server-renderer";
 import { createApp } from "./main";
 import { renderHeadToString } from "@vueuse/head";
-import type { Request, Response } from "express";
 import { useUserStore } from "./store";
+import { permission } from "./utils/permission";
 
 const renderPreloadLink = (file: string) => {
   if (file.endsWith(".js")) {
@@ -28,8 +28,8 @@ const renderPreloadLink = (file: string) => {
 const renderPreloadLinks = (modules: any[], manifest: Record<string, any>) => {
   let links = "";
   const seen = new Set();
-  modules.forEach((id) => {
-    const files = manifest[id];
+  modules.forEach((module) => {
+    const files = manifest[module];
     if (files) {
       files.forEach((file: string) => {
         if (!seen.has(file)) {
@@ -58,19 +58,16 @@ const replaceHtmlTag = (html: string) => {
 export async function render({
   url,
   manifest = {},
-  ssrContext,
+  common,
 }: {
   url: string;
   manifest: Record<string, string[]>;
-  ssrContext: { req: Request; res: Response };
+  common: Common;
 }) {
   const { app, store, router, head } = createApp();
   await useUserStore(store).getUserInfo();
-  useUserStore(store)
-    .getRoute()
-    .forEach((val) => {
-      router.addRoute(val);
-    });
+  await useUserStore().setRoute(router, url);
+  permission(router);
   await router.push(url);
   await router.isReady();
 
@@ -99,7 +96,15 @@ export async function render({
   const ctx: Record<string, any> = {};
   let appHtml = await renderToString(app, ctx);
   const { headTags } = await renderHeadToString(head);
+  let preloadLinks = "";
+  const appStateId = common.uuid();
   const appState = replaceHtmlTag(JSON.stringify(store.state.value));
-  const preloadLinks = renderPreloadLinks(ctx.modules, manifest);
-  return { appHtml, preloadLinks, appState, headTags };
+  if (common.redis) {
+    await common.redis.set(`appState:${appStateId}`, appState, { EX: 30 });
+  } else {
+    common.cache.appState[appStateId] = appState;
+  }
+  preloadLinks += `<script src="/api/state/${appStateId}"></script>`;
+  preloadLinks += renderPreloadLinks(ctx.modules, manifest);
+  return { appHtml, preloadLinks, headTags };
 }

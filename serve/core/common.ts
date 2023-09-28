@@ -1,7 +1,10 @@
 import { resolve, dirname } from "path";
 import fs from "fs-extra";
 import { fileURLToPath } from "url";
+import Joi from "joi";
+import { v4 as uuidv4 } from "uuid";
 import init from "../init/index.js";
+import dayjs from "dayjs";
 
 global.common = {
   path: (root, ...other) => {
@@ -65,7 +68,7 @@ global.common = {
         (process.env.NODE_PORT as unknown as number) || 3500,
         "0.0.0.0",
         () => {
-          logger.info(
+          common.logger.info(
             `监听端口： [ http://127.0.0.1:${process.env.NODE_PORT || 3500} ]`
           );
         }
@@ -73,9 +76,35 @@ global.common = {
     },
     restart: () => {
       common.os.serve.close(() => {
-        logger.info("重启服务...");
+        common.logger.info("重启服务...");
         common.os.start();
       });
     },
+  },
+  joi: Joi,
+  verify: (property, ObjectSchema, callback) => {
+    return (req, res, next) => {
+      const { value, error } = ObjectSchema.validate(req[property], {
+        allowUnknown: true,
+      });
+      const valid = error === undefined;
+      if (valid) {
+        req[property] = value;
+        next();
+      } else {
+        const { message } = error;
+        if (!callback) {
+          return common.res.parameter(res, { data: message });
+        }
+        callback(res);
+      }
+    };
+  },
+  uuid: () => {
+    return uuidv4();
+  },
+  dayjs: (date) => dayjs(date),
+  cache: {
+    appState: {},
   },
 };

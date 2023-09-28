@@ -6,6 +6,5 @@ config/
 logs/
 
 # 某些文件
-auto-imports.d.ts
-components.d.ts
 pnpm-lock.yaml
+core

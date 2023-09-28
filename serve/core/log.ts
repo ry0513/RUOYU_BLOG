@@ -1,6 +1,5 @@
 import log4js from "log4js";
 import fs from "fs-extra";
-import dayjs from "dayjs";
 
 export default async () => {
   const LOG_FILE_PATH = common.path("root", "./logs");
@@ -19,7 +18,7 @@ export default async () => {
         type: "file",
         filename: common.path(
           LOG_FILE_PATH,
-          dayjs().format("YYYY-MM-DD-HH-mm-ss.log")
+          common.dayjs().format("YYYY-MM-DD-HH-mm-ss.log")
         ),
         layout: {
           type: "pattern",
@@ -36,7 +35,7 @@ export default async () => {
   });
 
   const logger = log4js.getLogger("default");
-  global.logger = {
+  common.logger = {
     info: (msg) => {
       logger.info(msg);
     },

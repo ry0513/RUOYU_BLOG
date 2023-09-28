@@ -12,7 +12,6 @@ export const server = (router: Router) => {
     router.get("*", async (req, res) => {
       const url = req.originalUrl;
       try {
-        const ssrContext = { req, res };
         const template = await vite.transformIndexHtml(
           url,
           fs.readFileSync(common.path("root", "template.html"), "utf-8")
@@ -20,14 +19,13 @@ export const server = (router: Router) => {
         const render = (
           await vite.ssrLoadModule(common.path("root", "web/entry-server.ts"))
         ).render;
-        const { appHtml, preloadLinks, appState, headTags } = await render({
+        const { appHtml, preloadLinks, headTags } = await render({
           url,
-          ssrContext,
+          common,
         });
         const html = template
           .replace(`<!--preload-links-->`, preloadLinks)
           .replace(`<!--app-html-->`, appHtml)
-          .replace(`<!--app-state-->`, appState)
           .replace("<!--head-tags-->", headTags);
         res.status(200).set({ "Content-Type": "text/html" }).end(html);
       } catch (e: any) {

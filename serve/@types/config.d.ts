@@ -13,8 +13,8 @@ interface MysqlConfig {
  * @description redis 配置文件
  */
 interface RedisConfig {
-  port: number;
-  host: string;
-  password: string;
-  db?: string;
+  redis_port: number;
+  redis_host: string;
+  redis_passwd: string;
+  redis_db?: string;
 }

@@ -83,42 +83,42 @@
       </t-form-item>
 
       <!-- Account 配置 -->
-      <div class="ry-install-title">Account 配置</div>
-      <t-form-item label="Api" name="account_api">
+      <!-- <div class="ry-install-title">Account 配置</div>
+      <t-form-item  label="Api" name="account_api">
         <t-input
           v-model="formData.account_api"
           placeholder="请输入内容"
           @enter="onEnter"
         />
-      </t-form-item>
-      <t-form-item label="Token" name="account_token">
+      </t-form-item >
+      <t-form-item  label="Token" name="account_token">
         <t-input
           v-model="formData.account_token"
           placeholder="请输入内容"
           @enter="onEnter"
         />
-      </t-form-item>
-      <t-form-item label="AppId" name="account_appId">
+      </t-form-item >
+      <t-form-item  label="AppId" name="account_appId">
         <t-input
           v-model="formData.account_appId"
           placeholder="请输入内容"
           @enter="onEnter"
         />
-      </t-form-item>
-      <t-form-item label="ServeKey" name="account_serveKey">
+      </t-form-item >
+      <t-form-item  label="ServeKey" name="account_serveKey">
         <t-input
           v-model="formData.account_serveKey"
           placeholder="请输入内容"
           @enter="onEnter"
         />
-      </t-form-item>
-      <t-form-item label="ClientKey" name="account_clientKey">
+      </t-form-item >
+      <t-form-item  label="ClientKey" name="account_clientKey">
         <t-input
           v-model="formData.account_clientKey"
           placeholder="请输入内容"
           @enter="onEnter"
         />
-      </t-form-item>
+      </t-form-item > -->
 
       <t-form-item>
         <t-space size="small">
@@ -130,7 +130,7 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive } from "vue";
-import { LoadingPlugin, MessagePlugin, SubmitContext } from "tdesign-vue-next";
+import { LoadingPlugin, SubmitContext } from "tdesign-vue-next";
 import { useHead } from "@vueuse/head";
 import { _postInitConfig } from "@/api/init";
 import { _getPing } from "@/api/system";
@@ -151,11 +151,11 @@ const FORM_RULES = {
   redis_passwd: [{ required: true }],
   redis_db: [{ required: true }],
 
-  account_api: [{ required: true }],
-  account_token: [{ required: true }],
-  account_appId: [{ required: true }],
-  account_serveKey: [{ required: true }],
-  account_clientKey: [{ required: true }],
+  // account_api: [{ required: true }],
+  // account_token: [{ required: true }],
+  // account_appId: [{ required: true }],
+  // account_serveKey: [{ required: true }],
+  // account_clientKey: [{ required: true }],
 };
 
 const formData = reactive({
@@ -170,11 +170,11 @@ const formData = reactive({
   redis_passwd: "",
   redis_db: "",
 
-  account_api: "",
-  account_token: "",
-  account_appId: "",
-  account_serveKey: "",
-  account_clientKey: "",
+  // account_api: "",
+  // account_token: "",
+  // account_appId: "",
+  // account_serveKey: "",
+  // account_clientKey: "",
 });
 const form = ref(null);
 
@@ -210,7 +210,7 @@ const ping = () => {
       .catch((err) => ping());
   }, 5000);
 };
-// 禁用 Input 组件，按下 Enter 键时，触发 submit 事件
+// 禁用 t-input 组件，按下 Enter 键时，触发 submit 事件
 const onEnter = (_: any, { e }: any) => {
   e.preventDefault();
 };
@@ -218,7 +218,7 @@ const onEnter = (_: any, { e }: any) => {
 
 <style lang="scss" scoped>
 .ry-install-config-container {
-  width: 100%;
+  width: 90%;
   max-width: 800px;
   margin: var(--td-size-10) auto;
   border: 1px solid var(--td-gray-color-4);

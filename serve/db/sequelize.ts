@@ -15,11 +15,11 @@ export const mysqlTest = ({
     })
       .authenticate()
       .then(() => {
-        logger.info("MYSQL 模块: 连接正常");
+        common.logger.info("MySQL 模块: 连接正常");
         resolve(true);
       })
       .catch((err) => {
-        logger.error("MYSQL 模块: 连接异常", err);
+        common.logger.error("MySQL 模块: 连接异常", err);
         resolve(false);
       });
   });

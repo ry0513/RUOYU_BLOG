@@ -13,20 +13,19 @@ export default async () => {
         },
         {
           path: "/install",
-          name: "install",
-          component: "layouts/blank",
+          component: "layouts/blank/index",
           children: [
             {
               path: "",
-              name: "home",
+              name: "install",
               component: "pages/install/index",
             },
           ],
         },
       ];
+
       common.res.success(res, { route });
     });
-
 
     await common.loadRouter(
       router,

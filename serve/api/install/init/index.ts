@@ -68,7 +68,7 @@ export default async () => {
             2
           )
         );
-        logger.info("生成 config.json 文件");
+        common.logger.info("生成 config.json 文件");
         common.res.success(res);
         common.os.restart();
       }
