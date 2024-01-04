@@ -22,6 +22,7 @@ export const server = (router: Router) => {
         const { appHtml, preloadLinks, headTags } = await render({
           url,
           common,
+          cookie: req.header("cookie"),
         });
         const html = template
           .replace(`<!--preload-links-->`, preloadLinks)

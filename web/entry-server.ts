@@ -2,7 +2,6 @@ import { basename } from "path";
 import { renderToString } from "vue/server-renderer";
 import { createApp } from "./main";
 import { renderHeadToString } from "@vueuse/head";
-import { useUserStore } from "./store";
 import { permission } from "./utils/permission";
 
 const renderPreloadLink = (file: string) => {
@@ -59,16 +58,17 @@ export async function render({
   url,
   manifest = {},
   common,
+  cookie,
 }: {
   url: string;
   manifest: Record<string, string[]>;
   common: Common;
+  cookie: string;
 }) {
   const { app, store, router, head } = createApp();
-  await useUserStore(store).getUserInfo();
-  await useUserStore().setRoute(router, url);
-  permission(router);
-  await router.push(url);
+
+  permission(router, cookie);
+  await router.replace(url);
   await router.isReady();
 
   const matchedComponents = router.currentRoute.value.matched.flatMap(
@@ -106,5 +106,6 @@ export async function render({
   }
   preloadLinks += `<script src="/api/state/${appStateId}"></script>`;
   preloadLinks += renderPreloadLinks(ctx.modules, manifest);
+
   return { appHtml, preloadLinks, headTags };
 }

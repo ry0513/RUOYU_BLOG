@@ -1,6 +1,6 @@
 import { Router } from "express";
 import fs from "fs-extra";
-import { mysqlTest } from "../../../db/sequelize.js";
+import { mysqlRun } from "../../../db/sequelize.js";
 import { redisTest } from "../../../redis/redis.js";
 
 export default async () => {
@@ -25,7 +25,7 @@ export default async () => {
         account_clientKey,
       } = req.body;
       if (
-        !(await mysqlTest({
+        !(await mysqlRun({
           db_host,
           db_port,
           db_database,
@@ -68,7 +68,9 @@ export default async () => {
             2
           )
         );
-        common.logger.info("生成 config.json 文件");
+        common.logger!.info("MySQL 模块: 开始初始化数据结构");
+        await common.sequelize!.sync({ force: true, alter: true });
+        common.logger!.info("生成 config.json 文件");
         common.res.success(res);
         common.os.restart();
       }

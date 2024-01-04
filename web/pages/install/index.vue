@@ -65,9 +65,9 @@
       </t-form-item>
       <t-form-item label="密码" name="redis_passwd">
         <t-input
+          type="password"
           v-model="formData.redis_passwd"
           placeholder="请输入内容"
-          type="password"
           @enter="onEnter"
         />
       </t-form-item>
@@ -83,42 +83,42 @@
       </t-form-item>
 
       <!-- Account 配置 -->
-      <!-- <div class="ry-install-title">Account 配置</div>
-      <t-form-item  label="Api" name="account_api">
+      <div class="ry-install-title">Account 配置</div>
+      <t-form-item label="Api" name="account_api">
         <t-input
           v-model="formData.account_api"
           placeholder="请输入内容"
           @enter="onEnter"
         />
-      </t-form-item >
-      <t-form-item  label="Token" name="account_token">
+      </t-form-item>
+      <t-form-item label="Token" name="account_token">
         <t-input
           v-model="formData.account_token"
           placeholder="请输入内容"
           @enter="onEnter"
         />
-      </t-form-item >
-      <t-form-item  label="AppId" name="account_appId">
+      </t-form-item>
+      <t-form-item label="AppId" name="account_appId">
         <t-input
           v-model="formData.account_appId"
           placeholder="请输入内容"
           @enter="onEnter"
         />
-      </t-form-item >
-      <t-form-item  label="ServeKey" name="account_serveKey">
+      </t-form-item>
+      <t-form-item label="ServeKey" name="account_serveKey">
         <t-input
           v-model="formData.account_serveKey"
           placeholder="请输入内容"
           @enter="onEnter"
         />
-      </t-form-item >
-      <t-form-item  label="ClientKey" name="account_clientKey">
+      </t-form-item>
+      <t-form-item label="ClientKey" name="account_clientKey">
         <t-input
           v-model="formData.account_clientKey"
           placeholder="请输入内容"
           @enter="onEnter"
         />
-      </t-form-item > -->
+      </t-form-item>
 
       <t-form-item>
         <t-space size="small">
@@ -151,11 +151,11 @@ const FORM_RULES = {
   redis_passwd: [{ required: true }],
   redis_db: [{ required: true }],
 
-  // account_api: [{ required: true }],
-  // account_token: [{ required: true }],
-  // account_appId: [{ required: true }],
-  // account_serveKey: [{ required: true }],
-  // account_clientKey: [{ required: true }],
+  account_api: [{ required: true }],
+  account_token: [{ required: true }],
+  account_appId: [{ required: true }],
+  account_serveKey: [{ required: true }],
+  account_clientKey: [{ required: true }],
 };
 
 const formData = reactive({
@@ -170,31 +170,27 @@ const formData = reactive({
   redis_passwd: "",
   redis_db: "",
 
-  // account_api: "",
-  // account_token: "",
-  // account_appId: "",
-  // account_serveKey: "",
-  // account_clientKey: "",
+  account_api: "",
+  account_token: "",
+  account_appId: "",
+  account_serveKey: "",
+  account_clientKey: "",
 });
 const form = ref(null);
 
 const onSubmit = ({ validateResult, firstError }: SubmitContext<FormData>) => {
   if (validateResult === true) {
+    const loadingMsg = ref("生成配置中...");
     const loading = LoadingPlugin({
       fullscreen: true,
       attach: "body",
       indicator: false,
-      text: "生成配置中...",
+      text: loadingMsg.value,
     });
+
     _postInitConfig(formData)
       .then(() => {
-        loading.hide();
-        LoadingPlugin({
-          fullscreen: true,
-          attach: "body",
-          indicator: false,
-          text: "重启服务中...",
-        });
+        loadingMsg.value = "重启服务中...";
         ping();
       })
       .catch(() => {

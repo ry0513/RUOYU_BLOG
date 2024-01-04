@@ -1,9 +1,6 @@
 import { createApp } from "./main";
 import { permission } from "@/utils/permission";
 import { useUserStore } from "./store";
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
-NProgress.configure({ showSpinner: false });
 
 const { app, router, store } = createApp();
 
@@ -13,15 +10,10 @@ const { app, router, store } = createApp();
     (window.appState &&
       JSON.parse(decodeURIComponent(window.atob(window.appState)))) ||
     {};
+  const userStore = useUserStore();
+  userStore.cancelRegisterRoute();
 
-  await useUserStore().setRoute(router);
   permission(router);
-
-  // 路由前置守卫
-  router.beforeEach(async (to, from, next) => {
-    NProgress.start();
-    next();
-  });
   // 组件解析守卫
   router.beforeResolve(async (to, from) => {
     let diffed = false;
@@ -42,14 +34,6 @@ const { app, router, store } = createApp();
         })
     );
   });
-
-  // 路由结束
-  router.afterEach(() => {
-    NProgress.done();
-  });
-
-  await router.push(useUserStore().currentRoute);
   await router.isReady();
-
   app.mount("#app");
 })();

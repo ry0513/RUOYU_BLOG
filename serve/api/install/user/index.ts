@@ -9,18 +9,13 @@ export default async () => {
       const route = [
         {
           path: "/:pathMatch(.*)*",
+          name: "home",
           redirect: "/install",
         },
         {
           path: "/install",
-          component: "layouts/blank/index",
-          children: [
-            {
-              path: "",
-              name: "install",
-              component: "pages/install/index",
-            },
-          ],
+          name: "install",
+          component: "pages/install/index",
         },
       ];
 

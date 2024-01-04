@@ -18,11 +18,12 @@ export const server = (router: Router) => {
         url,
         manifest: JSON.parse(
           fs.readFileSync(
-            common.path("root", "dist/client/ssr-manifest.json"),
+            common.path("root", "dist/client/.vite/ssr-manifest.json"),
             "utf-8"
           )
         ),
         common,
+        cookie: req.header("cookie"),
       });
       const html = template
         .replace(`<!--preload-links-->`, preloadLinks)

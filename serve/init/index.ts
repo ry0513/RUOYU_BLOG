@@ -7,7 +7,7 @@ import fs from "fs-extra";
 import session from "express-session";
 import logs from "../core/log.js";
 import { redisRun } from "../redis/redis.js";
-import { mysqlTest } from "../db/sequelize.js";
+import { mysqlRun } from "../db/sequelize.js";
 
 export default async () => {
   return new Promise<{ app: Express }>(async (resolve, reject) => {
@@ -27,26 +27,27 @@ export default async () => {
     const PATH_RESOURCE = common.path("root", "config");
     if (!fs.existsSync(PATH_RESOURCE)) {
       fs.mkdirSync(PATH_RESOURCE);
-      common.logger.info("生成 config 文件夹成功");
+      common.logger!.info("生成 config 文件夹成功");
     }
 
     // 检测配置文件是否存在
     if (!fs.existsSync(common.path("root", "config/config.json"))) {
       // 引入安装用的api
-      common.logger.info("config.json 文件不存在，开始执行安装程序");
+      common.logger!.info("config.json 文件不存在，开始执行安装程序");
       app.use(
         "/api/",
         await (await import("../api/install/index.js")).default()
       );
     } else {
       // 引入正常用的api
-      const config = JSON.parse(
+      common.config = JSON.parse(
         fs.readFileSync(common.path("root", "config/config.json"), "utf-8")
       );
 
       // 初始化 redis, session
-      await redisRun(config);
-      await mysqlTest(config);
+      await redisRun(common.config);
+      await mysqlRun(common.config);
+
       app.use(
         session({
           cookie: {

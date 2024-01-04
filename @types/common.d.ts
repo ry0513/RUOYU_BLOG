@@ -7,7 +7,13 @@ interface ResponseFun {
    */
   success: (
     res: import("express").Response,
-    obj?: { route?: any[]; rows?: any[]; state?: string }
+    obj?: {
+      route?: any[];
+      rows?: any[];
+      state?: string;
+      user?: object;
+      data?: any;
+    }
   ) => void;
   /**
    * @description 参数错误
@@ -54,9 +60,31 @@ interface osFun {
   serve?: any;
   start: () => void;
   restart: () => void;
+  stop: () => void;
+}
+
+interface Config {
+  db_host: string;
+  db_port: number;
+  db_database: string;
+  db_user: string;
+  db_passwd: string;
+
+  redis_host: string;
+  redis_port: number;
+  redis_passwd: string;
+  redis_db: string;
+
+  account_api: string;
+  account_token: string;
+  account_appId: string;
+  account_serveKey: string;
+  account_clientKey: string;
 }
 
 interface Common {
+  config: Config;
+
   /**
    * @description 获取指定文件绝对路径
    * @param root 初始目录，根目录的话写 root
@@ -111,10 +139,12 @@ interface Common {
    */
   redis?: import("redis").RedisClientType;
 
+  sequelize?: import("sequelize-typescript").Sequelize;
+
   /**
    * @description UUID
    */
-  uuid: () => string;
+  uuid: (_?: string) => string;
 
   /**
    * @description 日志

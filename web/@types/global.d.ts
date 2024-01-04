@@ -4,3 +4,5 @@ declare module globalThis {
    */
   var appState: any;
 }
+
+type loginData = { login: string; tk: string };
