@@ -4,15 +4,7 @@ import { RouteRecordRaw } from "vue-router";
 const routeAllPathToCompMap = import.meta.glob(`../{layouts,pages}/**/*.vue`);
 
 const formatRoute = (list: Array<RouteRecordRaw>): Array<RouteRecordRaw> => {
-  const newList = formatRouteList(list);
-
-  newList.push({
-    path: "/:pathMatch(.*)*",
-    name: "404",
-    component: () => import("@/pages/error/404.vue"),
-  });
-
-  return newList;
+  return formatRouteList(list);
 };
 
 const formatRouteList = (

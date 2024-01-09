@@ -17,7 +17,7 @@ export const permission = (router: Router, cookie?: string) => {
     }
     if (!userStore.registerRoute) {
       await useUserStore().getUserInfo(router, cookie);
-      return next({ ...to, replace: true });
+      return next(to.fullPath);
     }
     if (getPath(to.path, 1) === "/token") {
       return next();

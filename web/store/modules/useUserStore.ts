@@ -48,17 +48,10 @@ export const useUserStore = defineStore("userStore", () => {
       formatRoute(state.route).forEach((val) => {
         router.addRoute(val);
       });
+
       state.registerRoute = true;
       resolve(true);
     });
-  };
-
-  /** @description 设置路由 */
-  const setRoute = (router) => {
-    formatRoute(state.route).forEach((val) => {
-      router.addRoute(val);
-    });
-    state.registerRoute = true;
   };
 
   /** @description 取消路由 */
@@ -72,7 +65,6 @@ export const useUserStore = defineStore("userStore", () => {
   return {
     ...toRefs(state),
     getUserInfo,
-    setRoute,
     login,
     cancelRegisterRoute,
   };

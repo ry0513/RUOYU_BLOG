@@ -8,14 +8,14 @@ export default async () => {
     router.get("/info", async (req, res) => {
       const route = [
         {
-          path: "/:pathMatch(.*)*",
-          name: "home",
-          redirect: "/install",
-        },
-        {
           path: "/install",
           name: "install",
           component: "pages/install/index",
+        },
+        {
+          path: "/:pathMatch(.*)*",
+          name: "NotFound",
+          redirect: "/install",
         },
       ];
 

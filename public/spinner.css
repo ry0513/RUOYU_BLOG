@@ -1,5 +1,9 @@
+body.loading {
+  overflow: hidden;
+}
 .spinner {
   position: fixed;
+  width: 100%;
   top: 0;
   bottom: 0;
   left: 0;
@@ -8,6 +12,7 @@
   justify-content: center;
   align-items: center;
   background-color: #ffffff;
+  z-index: 99999;
 }
 
 .spinner > div {
